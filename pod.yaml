@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: busybox
+  name: busybox
+spec:
+  containers:
+  - command:
+    - sleep
+    - 1h
+    image: busybox
+    name: busybox
+    volumeMounts:
+    - name: container-registry
+      mountPath: ".docker"
+  volumes:
+  - name: container-registry
+    secret:
+      secretName: container-registry
+  restartPolicy: Never
