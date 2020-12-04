@@ -167,12 +167,12 @@ Status:
     URL:  http://hello.default.svc.cluster.local
   Conditions:
     Last Transition Time:        2020-12-04T03:15:53Z
-    Message:                     Revision "hello-00002" failed with message: Unable to fetch image "gcr.io/csantanapr/helloworld-go": failed to resolve image to digest: HEAD https://gcr.io/v2/${PROJECT_ID}/helloworld-go/manifests/latest: unsupported status code 401.
+    Message:                     Revision "hello-00002" failed with message: Unable to fetch image "gcr.io/${PROJECT_ID}/helloworld-go": failed to resolve image to digest: HEAD https://gcr.io/v2/${PROJECT_ID}/helloworld-go/manifests/latest: unsupported status code 401.
     Reason:                      RevisionFailed
     Status:                      False
     Type:                        ConfigurationsReady
     Last Transition Time:        2020-12-04T03:15:53Z
-    Message:                     Revision "hello-00002" failed with message: Unable to fetch image "gcr.io/csantanapr/helloworld-go": failed to resolve image to digest: HEAD https://gcr.io/v2/${PROJECT_ID}/helloworld-go/manifests/latest: unsupported status code 401.
+    Message:                     Revision "hello-00002" failed with message: Unable to fetch image "gcr.io/${PROJECT_ID}/helloworld-go": failed to resolve image to digest: HEAD https://gcr.io/v2/${PROJECT_ID}/helloworld-go/manifests/latest: unsupported status code 401.
     Reason:                      RevisionFailed
     Status:                      False
     Type:                        Ready
