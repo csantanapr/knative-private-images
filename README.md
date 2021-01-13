@@ -184,8 +184,26 @@ Status:
   Observed Generation:           2
 ```
 
-Since we indicated the image url in the yaml without a digest, the controller needs access to resolve the image url to an url that includes the digest.
+Since we indicated the image url in the yaml without a digest, by default the controller needs access to resolve the image url to an url that includes the digest. It does a `HEAD` http request to get it but it needs auth.
 
+## Fix 1. Disable Tag resolution
+One way to fix is to disabele tag resolution like indicated in the doc [skipping-tag-resolution](https://knative.dev/docs/serving/tag-resolution/#skipping-tag-resolution)
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-deployment
+  namespace: knative-serving
+
+data:
+  # List of repositories for which tag to digest resolving should be skipped
+  registriesSkippingTagResolving: gcr.io
+```
+
+
+
+## Fix 2. Provide DIGEST with Image URL
 One way to fix this is to provide the image url with the digest
 
 Lets delete the ksvc
@@ -236,7 +254,7 @@ Hello Knative!
 
 This works but is going to be `PITA` to tell all your friends that are going to use your cluster to specify the image with sha256.
 So lets give the Knative Controller access to the authentication file we already gave the kubelet.
-
+## Fix 3. Providing DockerConfig to Knative Controller
 The Knative Controller leverage the project [k8schain](https://github.com/google/go-containerregistry/tree/master/pkg/authn/k8schain) to figure out how to authenticate with the registry reference by the image url.
 The k8schain at some point was part of the kubernetes kubelet and recently got remove, and now the go-containerregistry has a fork of this code https://github.com/vdemeester/k8s-pkg-credentialprovider
 
@@ -249,10 +267,6 @@ https://github.com/vdemeester/k8s-pkg-credentialprovider/blob/master/config.go#L
 One option is that you can modify the controller deployment, and mount the hostpath that is use for the kubelet, but you would need to give certain permission to the controller to access.
 
 Another option is you can create a secret and mount this secret on the controller.
-
-I will use the later.
-
-## Providing DockerConfig to Knative Controller
 
 Create the secret `container-registry` in the namespace of the Controller `knative-serving`
 ```bash
